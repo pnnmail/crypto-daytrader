@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.env
+.claude/
+chroma_db/
+reports/
+data_raw/
+*_history*.json
+state.json
+autoscan_state.json

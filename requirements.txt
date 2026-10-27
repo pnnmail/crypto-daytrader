@@ -1,0 +1,8 @@
+pandas
+numpy
+scipy
+requests
+stumpy
+python-telegram-bot
+python-telegram-bot[job-queue]
+chromadb

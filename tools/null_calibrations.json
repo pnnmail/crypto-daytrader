@@ -1,0 +1,158 @@
+[
+  {
+    "name": "eth_flow_minute_v1",
+    "created": "2026-08-28T14:31:16+00:00",
+    "procedure": {
+      "asset": "ETHUSDT",
+      "source": "Binance aggTrades -> минутные признаки",
+      "outcome": "цена Coinbase ETH-USD",
+      "window": "2026-07-29..2026-08-27 (30 дней)",
+      "n_features": 5,
+      "n_horizons": 3,
+      "n_windows": 2,
+      "cells_searched": 36,
+      "selection": "максимум |t| по всем клеткам",
+      "estimator": "t по дневным блокам, крайние квинтили 40/60",
+      "null_kinds": [
+        "random",
+        "ar1",
+        "block_perm",
+        "reversed"
+      ],
+      "placebo_horizon": {
+        "imbalance": 8.31,
+        "impact": 2.02,
+        "big_share": 1.05,
+        "sweep": 1.17,
+        "intensity": 1.47
+      }
+    },
+    "n_nulls": 240,
+    "null_median": 1.746,
+    "null_p90": 2.447,
+    "null_p95": 3.11,
+    "null_p99": 3.413,
+    "null_max": 4.305,
+    "share_above_2": 25.8,
+    "discovery_threshold": 3.11,
+    "real_features": {
+      "imbalance": 1.599,
+      "impact": 2.334,
+      "big_share": 1.541,
+      "sweep": 2.114,
+      "intensity": 2.308
+    },
+    "note": "discovery_threshold применим ТОЛЬКО к этой процедуре отбора. Для предрегистрированной проверки использовать confirmation_threshold(n_blocks).",
+    "version": "v1"
+  },
+  {
+    "name": "eth_vol_innovation_v2",
+    "created": "2026-08-28T14:46:51+00:00",
+    "procedure": {
+      "asset": "ETHUSDT",
+      "target": "log(RV_future/RV_past), окна равной длины",
+      "features": [
+        "rv_past",
+        "depth",
+        "oi_change"
+      ],
+      "horizons_min": [
+        60,
+        240
+      ],
+      "n_windows": 2,
+      "cells_searched": 4,
+      "selection": "максимум |t| по клеткам",
+      "estimator": "t по дневным блокам, крайние квинтили 40/60",
+      "null_kinds": [
+        "random",
+        "ar1",
+        "block_perm",
+        "reversed"
+      ],
+      "placebo": "та же процедура против ПРОШЛОЙ неожиданности"
+    },
+    "n_nulls": 160,
+    "null_median": 0.601,
+    "null_p90": 1.951,
+    "null_p95": 2.231,
+    "null_p99": 2.89,
+    "null_max": 3.936,
+    "share_above_2": 8.8,
+    "discovery_threshold": 2.231,
+    "real_features": {
+      "rv_past": 9.569,
+      "depth": 0.243,
+      "oi_change": 2.017
+    },
+    "note": "discovery_threshold применим ТОЛЬКО к этой процедуре отбора. Для предрегистрированной проверки использовать confirmation_threshold(n_blocks).",
+    "version": "v2"
+  },
+  {
+    "name": "eth_vol_stratified_180d_v4",
+    "created": "2026-08-28T16:33:21+00:00",
+    "procedure": {
+      "asset": "ETHUSDT",
+      "target": "log(RV_future)",
+      "conditioning": "страты по RV_past, 20 шт",
+      "window": "2026-02-01..2026-07-31 (181 день)",
+      "outcome_venue": "Binance (для волатильности площадка не критична, корреляция с Coinbase 0.9997)",
+      "features": [
+        "depth",
+        "oi_change"
+      ],
+      "horizons_min": [
+        60,
+        240
+      ],
+      "n_windows": 2,
+      "cells_searched": 4,
+      "null_kinds": [
+        "random",
+        "ar1",
+        "block_perm",
+        "reversed"
+      ],
+      "target_invariance": "пройдена: контроли 1.32 и 0.71 при пороге 2.23"
+    },
+    "n_nulls": 120,
+    "null_median": 0.911,
+    "null_p90": 1.631,
+    "null_p95": 2.216,
+    "null_p99": 2.771,
+    "null_max": 4.024,
+    "share_above_2": 6.7,
+    "discovery_threshold": 2.216,
+    "real_features": {
+      "depth": 1.433,
+      "oi_change": 0.633
+    },
+    "note": "discovery_threshold применим ТОЛЬКО к этой процедуре отбора. Для предрегистрированной проверки использовать confirmation_threshold(n_blocks).",
+    "version": "v3"
+  },
+  {
+    "name": "expectancy_h240_support20",
+    "created": "2026-09-11T01:28:00+00:00",
+    "procedure": {
+      "tool": "tools/expectancy.py",
+      "horizon_min": 240,
+      "support": 0.2,
+      "estimator": "превышение над базой того же дня, t по дневным блокам",
+      "n_rows": 499,
+      "n_days": 6,
+      "null_kind": "случайное подмножество той же мощности",
+      "caveat": "дневных блоков всего 6 — порог предварительный, пересчитать при 20+ днях"
+    },
+    "n_nulls": 300,
+    "null_median": 0.8,
+    "null_p90": 2.36,
+    "null_p95": 3.15,
+    "null_p99": 5.92,
+    "null_max": 15.15,
+    "share_above_2": 16.0,
+    "discovery_threshold": 3.15,
+    "real_features": {},
+    "note": "discovery_threshold применим ТОЛЬКО к этой процедуре отбора. Для предрегистрированной проверки использовать confirmation_threshold(n_blocks).",
+    "version": "v4"
+  }
+]
